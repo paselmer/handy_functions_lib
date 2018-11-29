@@ -64,3 +64,11 @@ def create_a_file_list_in_Unix(file_list,raw_dir,search_str):
     cmd = './make_file_list_unix ' + raw_dir + ' ' + search_str + ' > ' + file_list
     cmd_feedback = check_output(cmd, shell=True)   
     
+def create_a_file_list(file_list,raw_dir,search_str):
+    """ Calls appropriate function depending on OS. """
+    
+    if (os.name != 'nt'):                                # Linux/Unix
+        create_a_file_list_in_Unix(file_list,raw_dir,search_str)
+    else:                                                # Windows
+        create_a_file_list_in_Windows(file_list,raw_dir,search_str)    
+    
