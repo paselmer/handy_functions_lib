@@ -21,6 +21,10 @@ def delineate_consecutive_binned_vector_values(arr,bins):
     #     to the above output vectors (ui, ncounts).
     
     bin_numbers = np.digitize(arr,bins)
+    unique_vals = np.unique(bin_numbers)
+    if unique_vals.shape[0] <= 1:
+        print('All values of input are in a single bin. Returning Nones...')
+        return None, None, None
     dbn = bin_numbers[1:] - bin_numbers[:-1]
     change_bn_mask = dbn != 0
     indx = np.arange(arr.shape[0]-1)
