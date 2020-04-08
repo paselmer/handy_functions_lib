@@ -1,5 +1,9 @@
 # Routines to perform typical OS and file tasks, such as creating a list
 # of files matching a certain regular expression, or deleting a file.
+#
+# NOTES / UPDATES:
+#
+# [4/8/20] hdf5_show_tree function added
 
 import pdb
 import struct as struct
@@ -9,6 +13,7 @@ import xdrlib
 import os
 from subprocess import check_output
 import numpy as np
+import h5py
 
 def delete_file_in_Windows(file_name):
     """ Delete a file in Windows OS. """
@@ -71,4 +76,23 @@ def create_a_file_list(file_list,raw_dir,search_str):
         create_a_file_list_in_Unix(file_list,raw_dir,search_str)
     else:                                                # Windows
         create_a_file_list_in_Windows(file_list,raw_dir,search_str)    
+
+def print_attrs(name, obj):
+    """ Function used by hdf5_show_tree """
+    print (name)
+    for key, val in obj.attrs.items():
+        print ("    %s: %s" % (key, val))
+
+def hdf5_show_tree(hdf5_file, key=0):
+    """ Displays the hierachical tree of the HDF5 file.
+        Display subset of tree using key (string).
+    """
+    if key:
+        f = h5py.File(hdf5_file, 'r')
+        f[key].visititems(print_attrs)
+        f.close()
+    else:
+        f = h5py.File(hdf5_file, 'r')
+        f.visititems(print_attrs)
+        f.close()        
     
